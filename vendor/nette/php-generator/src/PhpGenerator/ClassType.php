@@ -22,6 +22,7 @@ final class ClassType
 {
 	use Nette\SmartObject;
 	use Traits\CommentAware;
+	use Traits\AttributeAware;
 
 	public const
 		TYPE_CLASS = 'class',
@@ -76,6 +77,15 @@ final class ClassType
 	}
 
 
+	/**
+	 * @param  string|object  $class
+	 */
+	public static function withBodiesFrom($class): self
+	{
+		return (new Factory)->fromClassReflection(new \ReflectionClass($class), true);
+	}
+
+
 	public function __construct(string $name = null, PhpNamespace $namespace = null)
 	{
 		$this->setName($name);
@@ -97,19 +107,14 @@ final class ClassType
 	}
 
 
-	/**
-	 * Deprecated: an object can be in multiple namespaces.
-	 * @deprecated
-	 */
+	/** @deprecated  an object can be in multiple namespaces */
 	public function getNamespace(): ?PhpNamespace
 	{
 		return $this->namespace;
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setName(?string $name): self
 	{
 		if ($name !== null && !Helpers::isIdentifier($name)) {
@@ -126,9 +131,49 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
+	public function setClass(): self
+	{
+		$this->type = self::TYPE_CLASS;
+		return $this;
+	}
+
+
+	public function isClass(): bool
+	{
+		return $this->type === self::TYPE_CLASS;
+	}
+
+
+	/** @return static */
+	public function setInterface(): self
+	{
+		$this->type = self::TYPE_INTERFACE;
+		return $this;
+	}
+
+
+	public function isInterface(): bool
+	{
+		return $this->type === self::TYPE_INTERFACE;
+	}
+
+
+	/** @return static */
+	public function setTrait(): self
+	{
+		$this->type = self::TYPE_TRAIT;
+		return $this;
+	}
+
+
+	public function isTrait(): bool
+	{
+		return $this->type === self::TYPE_TRAIT;
+	}
+
+
+	/** @return static */
 	public function setType(string $type): self
 	{
 		if (!in_array($type, [self::TYPE_CLASS, self::TYPE_INTERFACE, self::TYPE_TRAIT], true)) {
@@ -145,9 +190,7 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setFinal(bool $state = true): self
 	{
 		$this->final = $state;
@@ -161,9 +204,7 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setAbstract(bool $state = true): self
 	{
 		$this->abstract = $state;
@@ -192,18 +233,14 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return string|string[]
-	 */
+	/** @return string|string[] */
 	public function getExtends()
 	{
 		return $this->extends;
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function addExtend(string $name): self
 	{
 		$this->validateNames([$name]);
@@ -225,22 +262,29 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return string[]
-	 */
+	/** @return string[] */
 	public function getImplements(): array
 	{
 		return $this->implements;
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function addImplement(string $name): self
 	{
 		$this->validateNames([$name]);
 		$this->implements[] = $name;
+		return $this;
+	}
+
+
+	/** @return static */
+	public function removeImplement(string $name): self
+	{
+		$key = array_search($name, $this->implements, true);
+		if ($key !== false) {
+			unset($this->implements[$key]);
+		}
 		return $this;
 	}
 
@@ -257,31 +301,33 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return string[]
-	 */
+	/** @return string[] */
 	public function getTraits(): array
 	{
 		return array_keys($this->traits);
 	}
 
 
-	/**
-	 * @internal
-	 */
+	/** @internal */
 	public function getTraitResolutions(): array
 	{
 		return $this->traits;
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function addTrait(string $name, array $resolutions = []): self
 	{
 		$this->validateNames([$name]);
 		$this->traits[$name] = $resolutions;
+		return $this;
+	}
+
+
+	/** @return static */
+	public function removeTrait(string $name): self
+	{
+		unset($this->traits[$name]);
 		return $this;
 	}
 
@@ -293,7 +339,7 @@ final class ClassType
 	public function addMember($member): self
 	{
 		if ($member instanceof Method) {
-			if ($this->type === self::TYPE_INTERFACE) {
+			if ($this->isInterface()) {
 				$member->setBody(null);
 			}
 			$this->methods[$member->getName()] = $member;
@@ -320,16 +366,16 @@ final class ClassType
 	{
 		$this->consts = [];
 		foreach ($consts as $k => $v) {
-			$const = $v instanceof Constant ? $v : (new Constant($k))->setValue($v);
+			$const = $v instanceof Constant
+				? $v
+				: (new Constant($k))->setValue($v);
 			$this->consts[$const->getName()] = $const;
 		}
 		return $this;
 	}
 
 
-	/**
-	 * @return Constant[]
-	 */
+	/** @return Constant[] */
 	public function getConstants(): array
 	{
 		return $this->consts;
@@ -342,9 +388,7 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function removeConstant(string $name): self
 	{
 		unset($this->consts[$name]);
@@ -369,9 +413,7 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return Property[]
-	 */
+	/** @return Property[] */
 	public function getProperties(): array
 	{
 		return $this->properties;
@@ -430,9 +472,7 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return Method[]
-	 */
+	/** @return Method[] */
 	public function getMethods(): array
 	{
 		return $this->methods;
@@ -451,18 +491,16 @@ final class ClassType
 	public function addMethod(string $name): Method
 	{
 		$method = new Method($name);
-		if ($this->type === self::TYPE_INTERFACE) {
+		if ($this->isInterface()) {
 			$method->setBody(null);
 		} else {
-			$method->setVisibility(self::VISIBILITY_PUBLIC);
+			$method->setPublic();
 		}
 		return $this->methods[$name] = $method;
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function removeMethod(string $name): self
 	{
 		unset($this->methods[$name]);
@@ -476,9 +514,7 @@ final class ClassType
 	}
 
 
-	/**
-	 * @throws Nette\InvalidStateException
-	 */
+	/** @throws Nette\InvalidStateException */
 	public function validate(): void
 	{
 		if ($this->abstract && $this->final) {

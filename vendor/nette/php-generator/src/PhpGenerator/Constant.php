@@ -21,14 +21,13 @@ final class Constant
 	use Traits\NameAware;
 	use Traits\VisibilityAware;
 	use Traits\CommentAware;
+	use Traits\AttributeAware;
 
 	/** @var mixed */
 	private $value;
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setValue($val): self
 	{
 		$this->value = $val;

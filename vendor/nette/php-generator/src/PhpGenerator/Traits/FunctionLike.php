@@ -22,7 +22,7 @@ trait FunctionLike
 	/** @var string */
 	private $body = '';
 
-	/** @var array of name => Parameter */
+	/** @var Parameter[] */
 	private $parameters = [];
 
 	/** @var bool */
@@ -38,12 +38,12 @@ trait FunctionLike
 	private $returnNullable = false;
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setBody(string $code, array $args = null): self
 	{
-		$this->body = $args === null ? $code : (new Dumper)->format($code, ...$args);
+		$this->body = $args === null
+			? $code
+			: (new Dumper)->format($code, ...$args);
 		return $this;
 	}
 
@@ -54,9 +54,7 @@ trait FunctionLike
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function addBody(string $code, array $args = null): self
 	{
 		$this->body .= ($args === null ? $code : (new Dumper)->format($code, ...$args)) . "\n";
@@ -81,9 +79,7 @@ trait FunctionLike
 	}
 
 
-	/**
-	 * @return Parameter[]
-	 */
+	/** @return Parameter[] */
 	public function getParameters(): array
 	{
 		return $this->parameters;
@@ -114,9 +110,7 @@ trait FunctionLike
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setVariadic(bool $state = true): self
 	{
 		$this->variadic = $state;
@@ -130,9 +124,7 @@ trait FunctionLike
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setReturnType(?string $val): self
 	{
 		$this->returnType = $val;
@@ -146,9 +138,7 @@ trait FunctionLike
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setReturnReference(bool $state = true): self
 	{
 		$this->returnReference = $state;
@@ -162,9 +152,7 @@ trait FunctionLike
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setReturnNullable(bool $state = true): self
 	{
 		$this->returnNullable = $state;
@@ -185,9 +173,7 @@ trait FunctionLike
 	}
 
 
-	/**
-	 * @deprecated
-	 */
+	/** @deprecated */
 	public function setNamespace(Nette\PhpGenerator\PhpNamespace $val = null): self
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);

@@ -13,14 +13,15 @@ use Nette;
 
 
 /**
- * Method parameter description.
+ * Function/Method parameter description.
  *
  * @property mixed $defaultValue
  */
-final class Parameter
+class Parameter
 {
 	use Nette\SmartObject;
 	use Traits\NameAware;
+	use Traits\AttributeAware;
 
 	/** @var bool */
 	private $reference = false;
@@ -38,9 +39,7 @@ final class Parameter
 	private $defaultValue;
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setReference(bool $state = true): self
 	{
 		$this->reference = $state;
@@ -54,9 +53,7 @@ final class Parameter
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setType(?string $type): self
 	{
 		$this->type = $type;
@@ -97,9 +94,7 @@ final class Parameter
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setNullable(bool $state = true): self
 	{
 		$this->nullable = $state;
@@ -113,9 +108,7 @@ final class Parameter
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setDefaultValue($val): self
 	{
 		$this->defaultValue = $val;
