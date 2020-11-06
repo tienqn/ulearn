@@ -5,7 +5,7 @@
         <!-- banner start -->
         <div class="homepage-slide-blue">
             <h1>{{ Sitehelpers::get_option('pageHome', 'banner_title') }}</h1>
-            <h1>i love u</h1>
+            <h1>i love enjoyworks</h1>
             <span class="title-sub-header">{{ Sitehelpers::get_option('pageHome', 'banner_text') }}</span>
             <form method="GET" action="{{ route('course.list') }}">
             <div class="searchbox-contrainer col-md-6 mx-auto">
