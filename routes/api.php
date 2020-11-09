@@ -19,9 +19,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('upload', function(Request $request){
 
-	$path = Storage::disk('local')->put('images/originals', $request->file);
+	// $path = Storage::disk('local')->put('images/originals', $request->file);
 
 	// $exists = Storage::disk('s3')->exists('images/originals/D6KeWorzlylcAt51Y0tq43kqRPPYhTdgqjAaL9IF.txt');
+
+	$path = asset('storage/images/originals/tRsepQdXG5KQOT76DMHsK5ehYJr0BHIIVt2ihbFz.txt');
 
 	return response()->json($path);
 });
