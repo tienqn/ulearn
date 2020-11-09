@@ -33,6 +33,7 @@ final class Versions
      * @internal
      */
     const VERSIONS          = array (
+  'aws/aws-sdk-php' => '3.158.22@0aae6d7d0e9fc40ace69ed7f7785d7ddab4dabd0',
   'chumper/zipper' => 'v1.0.3@d15207e010f8fe1bdd341376bd86d599c4166423',
   'clue/stream-filter' => 'v1.5.0@aeb7d8ea49c7963d3b581378955dbf5bc49aa320',
   'dnoegel/php-xdg-base-dir' => 'v0.1.1@8f8a6e48c5ecb0f991c2fdcf5f154a47d85f9ffd',
@@ -53,10 +54,12 @@ final class Versions
   'laravel/socialite' => 'v4.4.1@80951df0d93435b773aa00efe1fad6d5015fac75',
   'laravel/tinker' => 'v1.0.10@ad571aacbac1539c30d480908f9d0c9614eaf1a7',
   'league/flysystem' => '1.1.3@9be3b16c877d477357c015cec057548cf9b2a14a',
+  'league/flysystem-aws-s3-v3' => '1.0.29@4e25cc0582a36a786c31115e419c6e40498f6972',
   'league/mime-type-detection' => '1.5.1@353f66d7555d8a90781f6f5e7091932f9a4250aa',
   'league/oauth1-client' => 'v1.8.2@159c3d2bf27568f9af87d6c3f4bb616a251eb12b',
   'moneyphp/money' => 'v3.3.1@122664c2621a95180a13c1ac81fea1d2ef20781e',
   'monolog/monolog' => '1.25.5@1817faadd1846cd08be9a49e905dc68823bc38c0',
+  'mtdowling/jmespath.php' => '2.6.0@42dae2cbd13154083ca6d70099692fef8ca84bfb',
   'nesbot/carbon' => '2.41.5@c4a9caf97cfc53adfc219043bcecf42bc663acee',
   'nikic/php-parser' => 'v4.10.2@658f1be311a230e0907f5dfe0213742aff0596de',
   'omnipay/common' => 'v3.0.5@0d1f4486c1c873537ac030d37c7ce2986c4de1d2',
@@ -154,7 +157,7 @@ final class Versions
   'sebastian/version' => '2.0.1@99732be0ddb3361e16ad77b68ba41efc8e979019',
   'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
   'webmozart/assert' => '1.8.0@ab2cb0b3b559010b75981b1bdce728da3ee90ad6',
-  'ulearnpro/ulearn' => 'dev-master@be07d1a33a55738af2db0357c6e203a36be769e6',
+  'ulearnpro/ulearn' => 'dev-master@87b6bfdee20b4fef22a9d643eeae20fbc7aa5e50',
 );
 
     private function __construct()
